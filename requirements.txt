@@ -1,0 +1,12 @@
+pandas
+pydantic
+groq
+opencv-python
+pytesseract
+numpy
+python-dotenv
+requests
+pdf2image
+fastapi
+uvicorn
+python-multipart
