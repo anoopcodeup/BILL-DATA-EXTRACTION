@@ -142,6 +142,22 @@ POST /extract-bill-data
 - Removes duplicate entries
 - Ensures accuracy > 95%
 
+### 🧠 Intelligent Validation Logic
+
+The system employs a multi-stage validation engine to ensure data integrity:
+
+1. **Mathematical Reconciliation**:
+   - Calculates `Sum(Line Items)` and compares it with the extracted `Total Amount`.
+   - If the difference is < 1.0 (to account for rounding), the extraction is marked as **High Confidence**.
+   - If mismatched, it triggers a warning flag in the response.
+
+2. **Fuzzy Deduplication**:
+   - Uses Levenshtein distance to identify duplicate rows that might appear across page boundaries.
+   - Merges identical items while preserving unique quantities.
+
+3. **Confidence Scoring**:
+   - Each extracted field is assigned a confidence score based on OCR clarity and LLM probability.
+
 ---
 
 ## 🔧 Technology Stack
@@ -212,7 +228,10 @@ Datathon/
 Create a `.env` file in the project root:
 ```bash
 GROQ_API_KEY=your_groq_api_key_here
-TESSERACT_CMD=/path/to/tesseract  # If not in PATH
+# Windows Example:
+# TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe
+# Linux/Mac Example:
+# TESSERACT_CMD=/usr/bin/tesseract
 ```
 
 **Important**: The `.env` file is required and must contain your Groq API key. This file is protected by `.gitignore` and will not be committed to version control.
